@@ -52,10 +52,13 @@ async function main() {
       const text = toText(await r.text());
       const hash = createHash("sha256").update(text).digest("hex");
       next[pageUrl] = { hash, checkedAt: today };
-      if (prev[pageUrl] && prev[pageUrl].hash !== hash) changed.push({ pageUrl, names });
+      if (prev[pageUrl] && prev[pageUrl].hash && prev[pageUrl].hash !== hash) changed.push({ pageUrl, names });
     } catch (err) {
-      if (prev[pageUrl]) next[pageUrl] = prev[pageUrl];
-      failed.push({ pageUrl, names, reason: String(err.message || err) });
+      const reason = String(err.message || err);
+      // 取れなくなったときだけ知らせる。毎日同じ失敗を流さない
+      const wasFailing = prev[pageUrl] && prev[pageUrl].failing;
+      next[pageUrl] = { ...(prev[pageUrl] || {}), failing: true, reason, failedAt: today };
+      failed.push({ pageUrl, names, reason, isNew: !wasFailing });
     }
     await new Promise((s) => setTimeout(s, 1500)); // 相手のサイトに負担をかけないよう間を空ける
   }
@@ -68,13 +71,14 @@ async function main() {
   for (const c of changed) console.log("変更:", c.names.join("、"), c.pageUrl);
   for (const f of failed) console.log("失敗:", f.names.join("、"), f.pageUrl, f.reason);
 
-  if (firstRun || !WEBHOOK || (changed.length === 0 && failed.length === 0)) return;
+  const newFails = failed.filter((f) => f.isNew);
+  if (firstRun || !WEBHOOK || (changed.length === 0 && newFails.length === 0)) return;
 
   const lines = ["【公式ページの変更】"];
   for (const c of changed) lines.push(`- ${c.names.join("、")}\n  <${c.pageUrl}>`);
-  if (failed.length) {
-    lines.push("【取得できなかったページ】");
-    for (const f of failed) lines.push(`- ${f.names.join("、")}（${f.reason}）\n  <${f.pageUrl}>`);
+  if (newFails.length) {
+    lines.push("【取得できなくなったページ】（次からは知らせません）");
+    for (const f of newFails) lines.push(`- ${f.names.join("、")}（${f.reason}）\n  <${f.pageUrl}>`);
   }
   lines.push("中身を確かめて、必要ならmicroCMSを直してください。");
   const content = lines.join("\n").slice(0, 1900);
