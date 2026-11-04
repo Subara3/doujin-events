@@ -92,3 +92,7 @@ return ['discord_webhook' => 'https://discord.com/api/webhooks/...'];
 ```
 
 ボット避けの見えない欄、同じ接続元から1時間5件まで、メンションの無効化を入れています。
+
+## ライセンス
+
+MIT License（`LICENSE`）。サイトに載せている開催情報は、各イベントの公式発表をもとにしたものです。
