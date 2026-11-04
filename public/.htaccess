@@ -1,0 +1,9 @@
+# events.subara3.com 用。
+# ルートの .htaccess の https リダイレクトをそのまま受け継ぐと、/events/ が URL に付いてしまうため、ここで書き直す。
+RewriteEngine On
+RewriteCond %{HTTPS} !=on
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+DirectoryIndex index.html
+AddType text/calendar .ics

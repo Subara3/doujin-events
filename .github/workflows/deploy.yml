@@ -1,0 +1,40 @@
+# microCMSで公開・更新したら（Webhook）、または毎朝、サイトを作り直してロリポップに上げる
+name: deploy
+on:
+  repository_dispatch:
+    types: [microcms-update]
+  schedule:
+    - cron: "0 21 * * *" # 毎朝6時（日本時間）
+  workflow_dispatch:
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: build
+        run: npm run build
+        env:
+          MICROCMS_SERVICE_DOMAIN: ${{ secrets.MICROCMS_SERVICE_DOMAIN }}
+          MICROCMS_API_KEY: ${{ secrets.MICROCMS_API_KEY }}
+      - name: APIキーが書き出しに混ざっていないか
+        run: |
+          if grep -rqF "$KEY" out; then echo "APIキーが out/ に含まれています"; exit 1; fi
+        env:
+          KEY: ${{ secrets.MICROCMS_API_KEY }}
+      - name: upload to lolipop
+        run: |
+          sudo apt-get install -y lftp >/dev/null
+          lftp -u "$FTP_USER","$FTP_PASSWORD" -e "set ftp:ssl-allow yes; set ssl:verify-certificate yes; mirror -R --delete --verbose --exclude-glob _private/config.php --exclude-glob _private/rate/ out /events; quit" ftp.lolipop.jp
+        env:
+          FTP_USER: ${{ secrets.FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}

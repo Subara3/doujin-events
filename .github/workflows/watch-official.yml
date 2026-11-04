@@ -1,0 +1,30 @@
+# 毎日、各イベントの公式ページが変わっていないか見張る。変わっていたらDiscordに知らせる
+name: watch-official
+on:
+  schedule:
+    - cron: "0 0 * * *" # 毎朝9時（日本時間）
+  workflow_dispatch:
+
+permissions:
+  contents: write # 前回のハッシュ（data/official-hashes.json）を書き戻すため
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: node scripts/watch-official.cjs
+        env:
+          MICROCMS_SERVICE_DOMAIN: ${{ secrets.MICROCMS_SERVICE_DOMAIN }}
+          MICROCMS_API_KEY: ${{ secrets.MICROCMS_API_KEY }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      - name: 記録を保存
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/official-hashes.json
+          git diff --cached --quiet || git commit -m "公式ページの記録を更新"
+          git push
