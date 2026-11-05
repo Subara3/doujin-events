@@ -34,7 +34,13 @@ jobs:
       - name: upload to lolipop
         run: |
           sudo apt-get install -y lftp >/dev/null
-          lftp -u "$FTP_USER","$FTP_PASSWORD" -e "set ftp:ssl-allow yes; set ssl:verify-certificate yes; mirror -R --delete --verbose --exclude-glob _private/config.php --exclude-glob _private/rate/ out /events; quit" ftp.lolipop.jp
+          # _next/static はファイル名に中身のハッシュが付くので、名前とサイズが同じなら送らない（--ignore-time）。
+          # 毎回ビルドし直すと日時がすべて新しくなり、フォント600個あまりを毎回送り直していた。
+          # 新しいJS・フォントを先に置き、HTMLを入れ替えてから、古いものを消す。
+          lftp -u "$FTP_USER","$FTP_PASSWORD" -e "set ftp:ssl-allow yes; set ssl:verify-certificate yes; \
+            mirror -R --ignore-time --verbose out/_next/static /events/_next/static; \
+            mirror -R --delete --verbose --exclude-glob _next/static/ --exclude-glob _private/config.php --exclude-glob _private/rate/ out /events; \
+            mirror -R --delete --ignore-time --verbose out/_next/static /events/_next/static; quit" ftp.lolipop.jp
         env:
           FTP_USER: ${{ secrets.FTP_USER }}
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
