@@ -8,7 +8,10 @@ const FIELDS = [
   "id", "label", "startDate", "endDate", "hours", "prefecture", "venue", "pageUrl",
   "entryStart", "entryEnd", "entryNote", "circleFee", "admissionFee", "schedule",
   "event.id", "event.name", "event.kind", "event.officialUrl",
+  "publishedAt", "event.publishedAt",
 ];
+
+type Raw = Edition & { publishedAt?: string | null; event: (Edition["event"] & { publishedAt?: string | null }) | null };
 
 export type Source = "API" | "スナップショット";
 
@@ -19,10 +22,18 @@ export async function getEditions(): Promise<{ contents: Edition[]; source: Sour
 
   if (serviceDomain && apiKey) {
     const client = createClient({ serviceDomain, apiKey });
-    const contents = await client.getAllContents<Edition>({
+    const raw = await client.getAllContents<Raw>({
       endpoint: "editions",
       queries: { fields: FIELDS, depth: 1, orders: "startDate" },
     });
+    // このキーは「下書きコンテンツの全取得」も付いているので、一覧に下書きも入ってくる。
+    // 一度も公開していない開催回と、イベントが公開されていない開催回は出さない。
+    const contents: Edition[] = raw
+      .filter((e) => e.publishedAt && e.event && e.event.publishedAt)
+      .map(({ publishedAt: _p, event, ...rest }) => {
+        const { publishedAt: _ep, ...ev } = event!;
+        return { ...rest, event: ev };
+      });
     return { contents, source: "API" };
   }
 
