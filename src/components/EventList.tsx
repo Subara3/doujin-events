@@ -1,10 +1,21 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import type { Edition } from "@/types";
 import {
   ENTRY_LABEL, daysBetween, entryState, fmt, jstYmd, todayJst, toNum, type EntryState, type Ymd,
 } from "@/lib/dates";
+
+// 種類ごとの色。public/img/blob-*.webp（scripts/watercolor.py で作った水彩のにじみ）と対応させている
+const KIND_SLUG: Record<string, string> = {
+  "COMITIA系": "comitia",
+  "文学フリマ": "bunfree",
+  "ZINE": "zine",
+  "創作全般": "general",
+};
+const slugOf = (kind?: string) => (kind && KIND_SLUG[kind]) || "other";
+const WD_SHORT = "日月火水木金土";
+const wdOf = (d: Ymd) => WD_SHORT[new Date(Date.UTC(d.y, d.m - 1, d.d)).getUTCDay()];
 
 type Row = { e: Edition; start: Ymd; end: Ymd | null; deadline: Ymd | null; state: EntryState };
 
@@ -32,7 +43,15 @@ export default function EventList({ editions, buildDate }: { editions: Edition[]
   );
 
   const prefs = useMemo(() => [...new Set(rows.map((r) => r.e.prefecture[0]))], [rows]);
-  const kinds = useMemo(() => [...new Set(rows.map((r) => r.e.event?.kind[0] ?? ""))].filter(Boolean), [rows]);
+  // チップの並びは決めた順にする（出てきた順だと毎回変わる）
+  const ORDER = Object.keys(KIND_SLUG);
+  const kinds = useMemo(
+    () =>
+      [...new Set(rows.map((r) => r.e.event?.kind[0] ?? ""))]
+        .filter(Boolean)
+        .sort((a, b) => (ORDER.indexOf(a) + 1 || 99) - (ORDER.indexOf(b) + 1 || 99)),
+    [rows],
+  );
 
   const shown = rows.filter(
     (r) =>
@@ -43,6 +62,15 @@ export default function EventList({ editions, buildDate }: { editions: Edition[]
 
   return (
     <>
+      <div className="kinds" role="group" aria-label="種類で絞り込む">
+        <button className="chip all" aria-pressed={kind === ""} onClick={() => setKind("")}>すべて</button>
+        {kinds.map((k) => (
+          <button key={k} className={`chip k-${slugOf(k)}`} aria-pressed={kind === k} onClick={() => setKind(kind === k ? "" : k)}>
+            {k}
+          </button>
+        ))}
+      </div>
+
       <div className="toolbar">
         <div className="tabs" role="tablist">
           <button role="tab" aria-selected={view === "list"} onClick={() => setView("list")}>リスト</button>
@@ -52,10 +80,6 @@ export default function EventList({ editions, buildDate }: { editions: Edition[]
           <select aria-label="都道府県" value={pref} onChange={(ev) => setPref(ev.target.value)}>
             <option value="">都道府県：すべて</option>
             {prefs.map((p) => <option key={p}>{p}</option>)}
-          </select>
-          <select aria-label="種類" value={kind} onChange={(ev) => setKind(ev.target.value)}>
-            <option value="">種類：すべて</option>
-            {kinds.map((k) => <option key={k}>{k}</option>)}
           </select>
           <label className="check">
             <input type="checkbox" checked={openOnly} onChange={(ev) => setOpenOnly(ev.target.checked)} /> 申込受付中だけ
@@ -90,42 +114,50 @@ function ListView({ rows, today }: { rows: Row[]; today: Ymd }) {
       {groups.map((g) => (
         <section key={g.key}>
           <h2 className="month">{g.label}</h2>
-          {g.rows.map((r) => <Card key={r.e.id} r={r} today={today} />)}
+          {g.rows.map((r, i) => <Card key={r.e.id} r={r} today={today} i={i} />)}
         </section>
       ))}
     </>
   );
 }
 
-function Card({ r: { e, start, end, deadline, state }, today }: { r: Row; today: Ymd }) {
+function Card({ r: { e, start, end, deadline, state }, today, i }: { r: Row; today: Ymd; i: number }) {
   const days = daysBetween(today, start);
   const sched = e.schedule[0] ?? "予定どおり";
   const left = deadline ? daysBetween(today, deadline) : null;
+  const slug = slugOf(e.event?.kind[0]);
   return (
-    <article className="card">
-      <div className="when">
-        <span className="date">{fmt(start)}{end && ` 〜 ${fmt(end)}`}</span>
-        <span className="days">{days > 0 ? `あと${days}日` : "今日"}</span>
+    <article className={`card k-${slug}`} style={{ "--i": Math.min(i, 8) } as CSSProperties}>
+      <div className="day" aria-hidden="true">
+        <span className="day-m">{start.m}月</span>
+        <span className="day-d">{start.d}</span>
+        <span className="day-w">{wdOf(start)}{end && ` 〜 ${end.m !== start.m ? `${end.m}/` : ""}${end.d}`}</span>
       </div>
-      <h3>
-        <a href={e.pageUrl} rel="noopener">{e.event?.name} {e.label}</a>
-        {sched !== "予定どおり" && <span className="badge warn">{sched}</span>}
-      </h3>
-      <p className="place">{e.prefecture[0]}　{e.venue}{e.hours && `　${e.hours}`}</p>
-      <p className="meta">
-        <span className={`badge ${state}`}>{ENTRY_LABEL[state]}</span>
-        {state === "open" && left !== null && <span className="left">締切まであと{left}日</span>}
-        <span className="kind">{e.event?.kind[0]}</span>
-      </p>
-      <dl>
-        {deadline ? (
-          <><dt>サークル申込締切</dt><dd>{fmt(deadline)}{e.entryNote && ` ／ ${e.entryNote}`}</dd></>
-        ) : e.entryNote ? (
-          <><dt>サークル申込</dt><dd>{e.entryNote}</dd></>
-        ) : null}
-        {e.circleFee && <><dt>参加費</dt><dd>{e.circleFee}</dd></>}
-        {e.admissionFee && <><dt>一般入場</dt><dd>{e.admissionFee}</dd></>}
-      </dl>
+      <div className="body">
+        <div className="when">
+          <span className="date">{fmt(start)}{end && ` 〜 ${fmt(end)}`}</span>
+          <span className="days">{days > 0 ? `あと${days}日` : "今日"}</span>
+        </div>
+        <h3>
+          <a href={e.pageUrl} rel="noopener">{e.event?.name} <span className="label">{e.label}</span></a>
+          {sched !== "予定どおり" && <span className="badge warn">{sched}</span>}
+        </h3>
+        <p className="place">{e.prefecture[0]}　{e.venue}{e.hours && `　${e.hours}`}</p>
+        <p className="meta">
+          <span className={`badge ${state}`}>{ENTRY_LABEL[state]}</span>
+          {state === "open" && left !== null && <span className="left">締切まであと{left}日</span>}
+          <span className="kind">{e.event?.kind[0]}</span>
+        </p>
+        <dl>
+          {deadline ? (
+            <><dt>サークル申込締切</dt><dd>{fmt(deadline)}{e.entryNote && ` ／ ${e.entryNote}`}</dd></>
+          ) : e.entryNote ? (
+            <><dt>サークル申込</dt><dd>{e.entryNote}</dd></>
+          ) : null}
+          {e.circleFee && <><dt>参加費</dt><dd>{e.circleFee}</dd></>}
+          {e.admissionFee && <><dt>一般入場</dt><dd>{e.admissionFee}</dd></>}
+        </dl>
+      </div>
     </article>
   );
 }
@@ -222,7 +254,7 @@ function CalendarView({ rows, today }: { rows: Row[]; today: Ymd }) {
               href={s.r.e.pageUrl}
               rel="noopener"
               title={`${s.r.e.event?.name} ${s.r.e.label}`}
-              className={`cal-bar ${s.kind}${s.contL ? " contL" : ""}${s.contR ? " contR" : ""}`}
+              className={`cal-bar ${s.kind}${s.kind === "event" ? ` k-${slugOf(s.r.e.event?.kind[0])}` : ""}${s.contL ? " contL" : ""}${s.contR ? " contR" : ""}`}
               style={{ gridColumn: `${s.col + 1} / span ${s.span}`, gridRow: s.lane + 2 }}
             >
               {s.kind === "deadline" ? "〆 " : ""}{s.r.e.event?.name} {s.r.e.label}
@@ -230,7 +262,7 @@ function CalendarView({ rows, today }: { rows: Row[]; today: Ymd }) {
           ))}
         </div>
       ))}
-      <p className="cal-legend"><span className="cal-bar event">開催</span><span className="cal-bar deadline">〆 サークル申込締切</span></p>
+      <p className="cal-legend"><span className="cal-bar event k-comitia">開催（種類ごとの色）</span><span className="cal-bar deadline">〆 サークル申込締切</span></p>
     </section>
   );
 }

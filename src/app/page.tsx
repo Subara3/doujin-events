@@ -10,11 +10,14 @@ export default async function Home() {
 
   return (
     <>
-      <header>
-        <h1>一次創作イベントウォッチャー</h1>
-        <p className="lead">
-          一次創作（オリジナル作品）の同人誌即売会の、これからの開催とサークル申込の締切をまとめています。必ず各イベントの公式サイトで確かめてください。
-        </p>
+      <header className="hero">
+        <div className="hero-in">
+          <p className="hero-kicker">同人誌即売会の日程と申込締切</p>
+          <h1>一次創作イベント<br />ウォッチャー</h1>
+          <p className="lead">
+            一次創作（オリジナル作品）の同人誌即売会の、これからの開催とサークル申込の締切をまとめています。必ず各イベントの公式サイトで確かめてください。
+          </p>
+        </div>
       </header>
       <main>
         <EventList editions={editions} buildDate={buildDate} />
