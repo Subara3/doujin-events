@@ -1,109 +1,106 @@
 {
   "https://note.com/bookcultureclub/n/naf4b87294a29": {
-    "hash": "ea4958a4b170cabf562521392f8eed4fb7ec50568bd5007bf458376ba5d43889",
-    "checkedAt": "2026-11-19"
+    "hash": "096328df3bd1519e583fd497640a614f553b2b14174d36fcae326a62b3bdc545",
+    "checkedAt": "2026-11-20"
   },
   "https://techbookfest.org/event/tbf21": {
     "hash": "6b394552024adcbfaab5d9c9aacb4838d0d9fec4d79c96955c93773cc7aafc41",
-    "checkedAt": "2026-11-19"
+    "checkedAt": "2026-11-20"
   },
   "https://canbadge-arc.com/mixket/about/?id=events": {
     "hash": "569f043b27d491eb092e06771d8b211cd48207c1b78f067296b1a4b4467e2599",
-    "checkedAt": "2026-11-19"
+    "checkedAt": "2026-11-20"
   },
   "https://tamacomi.info/": {
     "hash": "37d42f57349b375bc3d0d7bee3cde8d7042de75a2f6be134845a0af8c2088573",
-    "checkedAt": "2026-11-19"
+    "checkedAt": "2026-11-20"
   },
   "https://www.jgarden.jp/html/schedule.html": {
-    "hash": "12eb2affab52658e67c7613cc0b84577d6aa5a680e8d469c5629910211111c4c",
-    "checkedAt": "2026-11-19"
+    "hash": "5e397dd9dfaaa206de7cc705809525ce86df7af91be669b9f535997f8d39c82d",
+    "checkedAt": "2026-11-20"
   },
   "https://bunfree.net/event/": {
     "hash": "fe7fda59d91567fd2781fbdb9df3d86403cafe7223c32b5796fcf2c36c66a279",
     "checkedAt": "2026-11-04",
     "failing": true,
     "reason": "403",
-    "failedAt": "2026-11-19"
+    "failedAt": "2026-11-20"
   },
   "https://bunfree.net/event/u25tokyo01/": {
     "hash": "e0f55f6227a22c7ca6d9b3bb8c22d577e8be74908fd72bf02455547f13c4eea6",
     "checkedAt": "2026-11-04",
     "failing": true,
     "reason": "403",
-    "failedAt": "2026-11-19"
+    "failedAt": "2026-11-20"
   },
   "https://bunfree.net/event/sapporo12/": {
     "hash": "beeb25759d3927ff07f46f58e17eab768b9e6279f14af60dc1bbe4bcc687374f",
     "checkedAt": "2026-11-04",
     "failing": true,
     "reason": "403",
-    "failedAt": "2026-11-19"
+    "failedAt": "2026-11-20"
   },
   "https://bunfree.net/event/iwate12/": {
     "hash": "32411baf3379da002fd65f6ef1e9106b5d20be647536a143902fdc580e5e1b86",
     "checkedAt": "2026-11-04",
     "failing": true,
     "reason": "403",
-    "failedAt": "2026-11-19"
+    "failedAt": "2026-11-20"
   },
   "https://bunfree.net/event/tokyo44/": {
     "hash": "f43baf7af528234783b684a010a3a2bef5203c2ba5b7e04e2493e8c522991d17",
     "checkedAt": "2026-11-04",
     "failing": true,
     "reason": "403",
-    "failedAt": "2026-11-19"
+    "failedAt": "2026-11-20"
   },
   "https://bunfree.net/event/kagawa04/": {
     "hash": "35bb8f66137aeeab16dd5f4cf3fc290a3600de437c62505968043c071d761677",
     "checkedAt": "2026-11-04",
     "failing": true,
     "reason": "403",
-    "failedAt": "2026-11-19"
+    "failedAt": "2026-11-20"
   },
   "https://bunfree.net/event/hiroshima09/": {
     "hash": "970facab368b5a0c31961d449d80f62e34d727a1a729a7511c344b7520a0850c",
     "checkedAt": "2026-11-04",
     "failing": true,
     "reason": "403",
-    "failedAt": "2026-11-19"
+    "failedAt": "2026-11-20"
   },
   "https://bunfree.net/event/kyoto11/": {
     "hash": "440be30a69a350fc05176496ff39788b5ea567a844e95e2d31f476179ad55420",
     "checkedAt": "2026-11-04",
     "failing": true,
     "reason": "403",
-    "failedAt": "2026-11-19"
+    "failedAt": "2026-11-20"
   },
   "https://www.q-comitia.com/": {
     "hash": "945296c77bff6b4ae6a53d4bf77884d8de0baf71936457c7926b346d8c33d2a2",
-    "checkedAt": "2026-11-18",
-    "failing": true,
-    "reason": "403",
-    "failedAt": "2026-11-19"
+    "checkedAt": "2026-11-20"
   },
   "https://adv-kikaku.com/comitia19/": {
     "hash": "239262269ac460c2ef10ee0d013c7890cc0ff52017c7b7dd276d823a13883c4d",
-    "checkedAt": "2026-11-19"
+    "checkedAt": "2026-11-20"
   },
   "https://gataket.com/comitia/e/t63/": {
     "hash": "98ab48b064f2eb89ae5c3b1342537217db1811dc71ac613a0422b6cabf50fd93",
-    "checkedAt": "2026-11-19"
+    "checkedAt": "2026-11-20"
   },
   "https://n-comitia.com/": {
     "hash": "6b4700b5d0158a46a264544d2a4bc2c6e414c473020388b2d4e27a6dbe488f06",
-    "checkedAt": "2026-11-19"
+    "checkedAt": "2026-11-20"
   },
   "https://www.k-comitia.com/": {
     "hash": "fd9d815c14c9b46b612ddefe552f21a5511ece0606163428ed4da42fa5cda97f",
-    "checkedAt": "2026-11-19"
+    "checkedAt": "2026-11-20"
   },
   "https://www.comitia.co.jp/html/schedule.html": {
     "hash": "b85557e053f25bdb7da73b0da78e64d3a1592538fc9c723f14a9d1a10364b7df",
-    "checkedAt": "2026-11-19"
+    "checkedAt": "2026-11-20"
   },
   "https://www.comitia.co.jp/html/158.html": {
-    "hash": "64beee9195ef333a2e2d362237a60370dc5659f30148eba5f1890f1a8eed2dc3",
-    "checkedAt": "2026-11-19"
+    "hash": "065dcc72b024a5d9f2f7507b21cb463d66df922df010a54612d0e94b1aa9e306",
+    "checkedAt": "2026-11-20"
   }
 }
