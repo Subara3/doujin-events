@@ -1,10 +1,12 @@
 // 公式サイトの変更を見張る。GitHub Actions で毎日動かす。
 // 1. microCMS から公開中の開催回を取り、公式ページ（pageUrl）の一覧を作る
-// 2. 各ページを取得して、本文の文字だけを取り出し、ハッシュを取る
-// 3. 前回（data/official-hashes.json）と違えば Discord に知らせる
+// 2. 各ページを取得して、本文の文字だけを取り出し、ハッシュと「開催の中身の値」（日付・時刻・料金・会場）を取る
+// 3. 前回（data/official-hashes.json）と値が違えば、増えた値と消えた値を Discord に知らせる
+//    本文だけが変わった（お知らせ欄やおすすめ欄が動いた）ときは知らせない
 // 直すのは人とClaude（MCP）。ここでは知らせるだけにしている。
 const { readFileSync, writeFileSync, mkdirSync } = require("node:fs");
 const { createHash } = require("node:crypto");
+const { factsOf } = require("./facts.cjs");
 
 const DOMAIN = process.env.MICROCMS_SERVICE_DOMAIN;
 const KEY = process.env.MICROCMS_API_KEY;
@@ -43,6 +45,7 @@ async function main() {
   try { prev = JSON.parse(readFileSync(STATE, "utf8")); } catch { /* 初回 */ }
   const next = {};
   const changed = [];
+  const quiet = []; // 本文だけ変わったページ
   const failed = [];
 
   for (const [pageUrl, names] of pages) {
@@ -51,8 +54,15 @@ async function main() {
       if (!r.ok) throw new Error(String(r.status));
       const text = toText(await r.text());
       const hash = createHash("sha256").update(text).digest("hex");
-      next[pageUrl] = { hash, checkedAt: today };
-      if (prev[pageUrl] && prev[pageUrl].hash && prev[pageUrl].hash !== hash) changed.push({ pageUrl, names });
+      const facts = factsOf(text);
+      next[pageUrl] = { hash, facts, checkedAt: today };
+      const before = prev[pageUrl];
+      if (before && Array.isArray(before.facts)) {
+        const add = facts.filter((x) => !before.facts.includes(x));
+        const del = before.facts.filter((x) => !facts.includes(x));
+        if (add.length || del.length) changed.push({ pageUrl, names, add, del });
+        else if (before.hash && before.hash !== hash) quiet.push({ pageUrl, names });
+      }
     } catch (err) {
       const reason = String(err.message || err);
       // 取れなくなったときだけ知らせる。毎日同じ失敗を流さない
@@ -67,15 +77,21 @@ async function main() {
   writeFileSync(STATE, JSON.stringify(next, null, 2) + "\n");
 
   const firstRun = Object.keys(prev).length === 0;
-  console.log(`見張ったページ ${pages.size}件 / 変わった ${changed.length}件 / 取れなかった ${failed.length}件${firstRun ? "（初回なので記録だけ）" : ""}`);
-  for (const c of changed) console.log("変更:", c.names.join("、"), c.pageUrl);
+  console.log(`見張ったページ ${pages.size}件 / 値が変わった ${changed.length}件 / 本文だけ変わった ${quiet.length}件 / 取れなかった ${failed.length}件${firstRun ? "（初回なので記録だけ）" : ""}`);
+  for (const c of changed) console.log("変更:", c.names.join("、"), c.pageUrl, "増えた:", c.add.join(" / "), "消えた:", c.del.join(" / "));
+  for (const q of quiet) console.log("本文だけ:", q.names.join("、"), q.pageUrl);
   for (const f of failed) console.log("失敗:", f.names.join("、"), f.pageUrl, f.reason);
 
   const newFails = failed.filter((f) => f.isNew);
   if (firstRun || !WEBHOOK || (changed.length === 0 && newFails.length === 0)) return;
 
   const lines = ["【公式ページの変更】"];
-  for (const c of changed) lines.push(`- ${c.names.join("、")}\n  <${c.pageUrl}>`);
+  for (const c of changed) {
+    lines.push(`- ${c.names.join("、")}`);
+    if (c.add.length) lines.push(`  増えた：${c.add.join(" / ")}`);
+    if (c.del.length) lines.push(`  消えた：${c.del.join(" / ")}`);
+    lines.push(`  <${c.pageUrl}>`);
+  }
   if (newFails.length) {
     lines.push("【取得できなくなったページ】（次からは知らせません）");
     for (const f of newFails) lines.push(`- ${f.names.join("、")}（${f.reason}）\n  <${f.pageUrl}>`);
