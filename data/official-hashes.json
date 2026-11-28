@@ -1,106 +1,200 @@
 {
+  "https://www.comitia.co.jp/html/schedule.html": {
+    "hash": "a7a3289fe4c5093c7ea13332af3c61f33224b9bcd176bbaa236ec57b1a1012ea",
+    "facts": [
+      "日付 2026-11-12",
+      "日付 2026-12-13",
+      "日付 2026-12-18",
+      "日付 2027-3-14",
+      "日付 2027-5-23",
+      "日付 2027-9-5"
+    ],
+    "checkedAt": "2026-11-29"
+  },
   "https://note.com/bookcultureclub/n/naf4b87294a29": {
     "hash": "da7aa07edf20beefae388a2edf9f752943ec2eba62c2fb51d2e8285d007e198b",
-    "checkedAt": "2026-11-28"
+    "facts": [
+      "料金 1000円",
+      "料金 500円",
+      "日付 2026-12-5"
+    ],
+    "checkedAt": "2026-11-29"
   },
   "https://techbookfest.org/event/tbf21": {
     "hash": "6b394552024adcbfaab5d9c9aacb4838d0d9fec4d79c96955c93773cc7aafc41",
-    "checkedAt": "2026-11-28"
+    "facts": [],
+    "checkedAt": "2026-11-29"
   },
   "https://canbadge-arc.com/mixket/about/?id=events": {
     "hash": "569f043b27d491eb092e06771d8b211cd48207c1b78f067296b1a4b4467e2599",
-    "checkedAt": "2026-11-28"
+    "facts": [
+      "会場 すみだ産業会館",
+      "日付 2026-10-31",
+      "日付 2026-11-15",
+      "日付 2026-8-9",
+      "日付 2027-2-13",
+      "時刻 10:00",
+      "時刻 11:00",
+      "時刻 15:00",
+      "時刻 16:00"
+    ],
+    "checkedAt": "2026-11-29"
   },
   "https://tamacomi.info/": {
     "hash": "37d42f57349b375bc3d0d7bee3cde8d7042de75a2f6be134845a0af8c2088573",
-    "checkedAt": "2026-11-28"
+    "facts": [
+      "日付 2020-10-31",
+      "日付 2027-7-19",
+      "時刻 12:00",
+      "時刻 16:00"
+    ],
+    "checkedAt": "2026-11-29"
   },
   "https://www.jgarden.jp/html/schedule.html": {
     "hash": "5e397dd9dfaaa206de7cc705809525ce86df7af91be669b9f535997f8d39c82d",
-    "checkedAt": "2026-11-28"
+    "facts": [
+      "日付 2027-10-3",
+      "日付 2027-3-22",
+      "時刻 11:00",
+      "時刻 15:00"
+    ],
+    "checkedAt": "2026-11-29"
   },
   "https://bunfree.net/event/": {
     "hash": "fe7fda59d91567fd2781fbdb9df3d86403cafe7223c32b5796fcf2c36c66a279",
     "checkedAt": "2026-11-04",
     "failing": true,
     "reason": "403",
-    "failedAt": "2026-11-28"
+    "failedAt": "2026-11-29"
   },
   "https://bunfree.net/event/u25tokyo01/": {
     "hash": "e0f55f6227a22c7ca6d9b3bb8c22d577e8be74908fd72bf02455547f13c4eea6",
     "checkedAt": "2026-11-04",
     "failing": true,
     "reason": "403",
-    "failedAt": "2026-11-28"
+    "failedAt": "2026-11-29"
   },
   "https://bunfree.net/event/sapporo12/": {
     "hash": "beeb25759d3927ff07f46f58e17eab768b9e6279f14af60dc1bbe4bcc687374f",
     "checkedAt": "2026-11-04",
     "failing": true,
     "reason": "403",
-    "failedAt": "2026-11-28"
+    "failedAt": "2026-11-29"
   },
   "https://bunfree.net/event/iwate12/": {
     "hash": "32411baf3379da002fd65f6ef1e9106b5d20be647536a143902fdc580e5e1b86",
     "checkedAt": "2026-11-04",
     "failing": true,
     "reason": "403",
-    "failedAt": "2026-11-28"
+    "failedAt": "2026-11-29"
   },
   "https://bunfree.net/event/tokyo44/": {
     "hash": "f43baf7af528234783b684a010a3a2bef5203c2ba5b7e04e2493e8c522991d17",
     "checkedAt": "2026-11-04",
     "failing": true,
     "reason": "403",
-    "failedAt": "2026-11-28"
+    "failedAt": "2026-11-29"
   },
   "https://bunfree.net/event/kagawa04/": {
     "hash": "35bb8f66137aeeab16dd5f4cf3fc290a3600de437c62505968043c071d761677",
     "checkedAt": "2026-11-04",
     "failing": true,
     "reason": "403",
-    "failedAt": "2026-11-28"
+    "failedAt": "2026-11-29"
   },
   "https://bunfree.net/event/hiroshima09/": {
     "hash": "970facab368b5a0c31961d449d80f62e34d727a1a729a7511c344b7520a0850c",
     "checkedAt": "2026-11-04",
     "failing": true,
     "reason": "403",
-    "failedAt": "2026-11-28"
+    "failedAt": "2026-11-29"
   },
   "https://bunfree.net/event/kyoto11/": {
     "hash": "440be30a69a350fc05176496ff39788b5ea567a844e95e2d31f476179ad55420",
     "checkedAt": "2026-11-04",
     "failing": true,
     "reason": "403",
-    "failedAt": "2026-11-28"
+    "failedAt": "2026-11-29"
   },
   "https://www.q-comitia.com/": {
     "hash": "e5b9603f4cd0948e8dce490b44ef73f127dffb021eeef16976766b521b5407f7",
-    "checkedAt": "2026-11-28"
+    "facts": [
+      "料金 1000円",
+      "日付 2027-1-12",
+      "日付 2027-3-28"
+    ],
+    "checkedAt": "2026-11-29"
   },
   "https://adv-kikaku.com/comitia19/": {
     "hash": "239262269ac460c2ef10ee0d013c7890cc0ff52017c7b7dd276d823a13883c4d",
-    "checkedAt": "2026-11-28"
+    "facts": [
+      "料金 500円",
+      "料金 7000円",
+      "日付 2027-4-11",
+      "日付 2027-4-29",
+      "日付 2240-3-93",
+      "日付 4-29",
+      "時刻 23:59"
+    ],
+    "checkedAt": "2026-11-29"
   },
   "https://gataket.com/comitia/e/t63/": {
     "hash": "c42415a2cc73e684468e31009c82796680f0756e3bc6eeca23fd680a9181500a",
-    "checkedAt": "2026-11-28"
+    "facts": [
+      "日付 11-13",
+      "日付 2026-11-27",
+      "日付 2026-11-9",
+      "日付 2026-12-6",
+      "時刻 10:30",
+      "時刻 15:30"
+    ],
+    "checkedAt": "2026-11-29"
   },
   "https://n-comitia.com/": {
     "hash": "ca94b36794a23b20cc4ab1a26375cf867dc077335bcd0b214e0f1f8f2fdb5548",
-    "checkedAt": "2026-11-28"
+    "facts": [
+      "料金 1000円",
+      "日付 2026-12-8",
+      "日付 2026-12-9",
+      "日付 2027-2-6",
+      "日付 9-19",
+      "時刻 11:30",
+      "時刻 15:30"
+    ],
+    "checkedAt": "2026-11-29"
   },
   "https://www.k-comitia.com/": {
     "hash": "fd9d815c14c9b46b612ddefe552f21a5511ece0606163428ed4da42fa5cda97f",
-    "checkedAt": "2026-11-28"
-  },
-  "https://www.comitia.co.jp/html/schedule.html": {
-    "hash": "a7a3289fe4c5093c7ea13332af3c61f33224b9bcd176bbaa236ec57b1a1012ea",
-    "checkedAt": "2026-11-28"
+    "facts": [
+      "料金 予価1000円",
+      "日付 11-4",
+      "日付 11-9",
+      "日付 2025-11-2",
+      "日付 2026-10-11",
+      "日付 2026-9-28",
+      "日付 2027-1-24",
+      "日付 2027-5-16",
+      "時刻 10:00",
+      "時刻 11:00",
+      "時刻 15:00",
+      "時刻 16:00"
+    ],
+    "checkedAt": "2026-11-29"
   },
   "https://www.comitia.co.jp/html/158.html": {
     "hash": "3ef98ca5e6e2fc9f877c774afa3e29a8cd4959a6b91251a42e0719d960fc2ac0",
-    "checkedAt": "2026-11-28"
+    "facts": [
+      "日付 10-23",
+      "日付 10-27",
+      "日付 11-14",
+      "日付 12-13",
+      "日付 12-20",
+      "日付 2026-12-13",
+      "日付 7-30",
+      "日付 9-11",
+      "時刻 11:00",
+      "時刻 16:00"
+    ],
+    "checkedAt": "2026-11-29"
   }
 }
